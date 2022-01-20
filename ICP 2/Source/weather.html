@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+
+<html lang="en">
+
+<style>
+    .weatherModule {
+        background: #f2f2f2;
+        height: 150px;
+        width: 250px;
+        border: 1px dashed #ccc;
+        padding: 1em;
+    }
+</style>
+
+    <title>current weather</title>
+    <script>
+        angular.module('Presentweather', [])
+            .controller('Presentweatherctrl', function($scope, $http) {
+
+                $scope.getWeather = function() {
+                    var state = $scope.stateID;
+                    var city = $scope.cityName;
+                    $http.get('http://api.wunderground.com/api/4bbbc25f4f5946dd/conditions/q/'+state+'/'+city+'.json').success(function(data) {
+                        console.log(data);
+                        temp = data.current_observation.temp_f;
+                        icon = data.current_observation.icon_url;
+                        weather = data.current_observation.weather;
+                        humidity = data.current_observation.relative_humidity;
+                        wind = data.current_observation.wind_mph;
+                        console.log(temp);
+                        $scope.currentweather = {
+                            html: "Currently " + temp + " &deg; F and " + weather + ". Humidity is " + humidity + " and wind is " + wind +"mph"
+                        }
+                        $scope.currentIcon = {
+                            html: "<img src='" + icon + "'/>"
+                        }
+
+                    })
+                }
+
+            });
+    </script>
+
+<body>
+
+<div align="center">
+<div ng-app="Presentweather" ng-controller="Presentweatherctrl">
+
+    <h1>Current Weather</h1>
+    state <input type="text" ng-model="stateID" placeholder = "Enter State ID">
+    <br/>
+    <br/>
+    city <input type="text" ng-model="cityName" placeholder="Enter City Name">
+    <br/>
+    <br/>
+    <button id="btn" ng-click="getWeather()"> Show Weather </button>
+    <br/>
+    <br/>
+    <div class="weatherModule">
+        <p class="currentConditions" ng-bind-html-unsafe="currentweather.html"></p>
+        <div class="currentIcon" ng-bind-html-unsafe="currentIcon.html"></div>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>

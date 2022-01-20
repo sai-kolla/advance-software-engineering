@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en" >
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body ng-app="Presentweather">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+<script src="app.js"></script>
+
+
+<div align="center">
+    <div ng-app="Presentweather" ng-controller="Presentweatherctrl">
+
+        <h1>Weather report</h1>
+        Enter location<input type="text" id="txt_name" ng-model="cityname">
+        <br/>
+        <br/>
+        <button id="btn" ng-click="getWeather()"> Show Weather </button>
+        <br/>
+        <br/>
+        <div class="weatherModule">
+            <p class="currentConditions" ng-bind-html-unsafe="currentweather.html"></p>
+            <div class="currentIcon" ng-bind-html-unsafe="currentIcon.html"></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+
+<style>
+    .weatherModule {
+        background: #f2f2f2;
+        height: 150px;
+        width: 250px;
+        border: 1px dashed #ccc;
+        padding: 1em;
+    }
+</style>

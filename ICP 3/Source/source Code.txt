@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script>
+
+<html lang="en">
+
+
+
+<title>Nutrition</title>
+
+<body>
+
+<div align="center">
+    <div ng-app="NutriDet" ng-controller="NutriDetctrl">
+
+        <h1><b>Nutrition Details</b></h1>
+        <br/>
+        <br/>
+        Food  <input type="text" ng-model="food" placeholder = "Enter Item Name">
+        <br/>
+        <br/>
+        <button id="btn" ng-click="getNutridata()"> Get Nutri Details </button>
+        <br/>
+        <br/>
+        <button id="btn1" ng-click="getSpeech()"> get speech output </button>
+        <br/>
+        <br/>
+        <div class="NutriModule">
+            <p class="NutriData" ng-bind-html-unsafe="recepiedata.html"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+<script>
+    angular.module('NutriDet', [])
+        .controller('NutriDetctrl', function($scope, $http) {
+
+            $scope.getNutridata = function() {
+                var food = $scope.food;
+
+                $http.get("https://api.edamam.com/api/nutrition-data?app_id=c742f70b&app_key=3ab85189671c50894988f8119896d98e&ingr=\""+food+'"').success(function(data) {
+                    console.log(data);
+                    calories = data.calories;
+                    totalWeight = data.totalWeight;
+
+                    console.log(calories);
+                    console.log(totalWeight);
+                    $scope.recepiedata = {
+                        html:" calories "   + calories + " Kcal " + " weight " +totalWeight+ "g"
+                    }
+
+                    $scope.getSpeech = function() {
+                        var speech = $scope.food;
+                        window.location.href = "https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize?accept=audio/wav&text="+speech+"&voice=en-US_MichaelVoice"
+                    }
+
+                })
+            }
+
+        });
+</script>
+
+<style>
+    .ReciepeModule {
+        background: #36ffb1;
+        height: 150px;
+        width: 250px;
+        border: 1px dashed #ccc;
+        padding: 1em;
+    }
+</style>
+
